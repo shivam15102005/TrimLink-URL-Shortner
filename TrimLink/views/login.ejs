@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/png" href="/icon.png" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>TrimLink - URL Shortener</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body, html {
+      height: 100%;
+      background-color: #fff;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    /* Header/Navbar */
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 40px;
+      background-color: white;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    header .logo {
+      font-weight: 700;
+      font-size: 24px;
+      color: black;
+      cursor: pointer;
+    }
+
+    nav {
+      display: flex;
+      align-items: center;
+      transition: transform 0.4s ease-in-out;
+    }
+
+    nav a {
+      margin-left: 20px;
+      padding: 8px 12px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 14px;
+      transition: background-color 0.3s ease, color 0.3s ease;
+      color: white;
+      background-color: #6a34f5;
+      border: 1.5px solid #6a34f5;
+    }
+
+    nav a:hover {
+      background-color: blue;
+      color: white;
+    }
+
+    /* Hamburger (mobile) */
+    .menu-toggle {
+      display: none;
+      flex-direction: column;
+      cursor: pointer;
+      gap: 5px;
+    }
+    .menu-toggle span {
+      width: 25px;
+      height: 3px;
+      background: #6a34f5;
+      border-radius: 3px;
+    }
+
+    /* Login Container */
+    .container {
+      display: flex;
+      flex: 1;
+      height: calc(100vh - 70px);
+      width: 100%;
+    }
+
+    .left {
+      background: #f8f8ff;
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 40px;
+    }
+
+    .login-card {
+      width: 100%;
+      max-width: 400px;
+      padding: 30px 40px;
+      border-radius: 15px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    }
+
+    .login-card h2 {
+      margin-bottom: 20px;
+      color: #333;
+      font-weight: 700;
+      font-size: 28px;
+      border-bottom: 3px solid #6a34f5;
+      display: inline-block;
+      padding-bottom: 5px;
+    }
+
+    label {
+      display: block;
+      margin-top: 20px;
+      font-weight: 600;
+      color: #555;
+    }
+
+    input[type="email"],
+    input[type="password"] {
+      width: 100%;
+      padding: 12px;
+      margin-top: 6px;
+      border-radius: 8px;
+      border: 1px solid #ddd;
+      font-size: 16px;
+      transition: border-color 0.3s ease;
+    }
+
+    input[type="email"]:focus,
+    input[type="password"]:focus {
+      outline: none;
+      border-color: #6a34f5;
+      box-shadow: 0 0 8px rgba(106, 52, 245, 0.3);
+    }
+
+    button {
+      margin-top: 30px;
+      width: 100%;
+      background-color: #6a34f5;
+      color: white;
+      padding: 14px;
+      border: none;
+      border-radius: 10px;
+      font-weight: 700;
+      font-size: 18px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #572ecc;
+    }
+
+    .signup-link {
+      margin-top: 15px;
+      font-size: 14px;
+      color: #444;
+      text-align: center;
+    }
+
+    .signup-link a {
+      color: #6a34f5;
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .signup-link a:hover {
+      text-decoration: underline;
+    }
+
+    .right {
+      flex: 1;
+      background: #f8f8ff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 40px;
+      border-radius: 0 0 0 25px;
+    }
+
+    .right img {
+      max-width: 100%;
+      max-height: 90vh;
+      border-radius: 15px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+      object-fit: contain;
+    }
+
+    /* Hero Section */
+    .hero {
+      text-align: center;
+      padding: 80px 20px;
+      background: #f8f8ff;
+    }
+
+    .hero h1 {
+      font-size: 42px;
+      font-weight: 700;
+      color: #222;
+      margin-bottom: 20px;
+    }
+
+    .hero h1 span {
+      color: #6a34f5;
+    }
+
+    .hero p {
+      margin: 0 auto 30px;
+      max-width: 650px;
+      font-size: 18px;
+      color: #555;
+      line-height: 1.6;
+    }
+
+    .hero a {
+      display: inline-block;
+      background: #6a34f5;
+      color: #fff;
+      padding: 14px 28px;
+      border-radius: 10px;
+      font-weight: 700;
+      text-decoration: none;
+      font-size: 18px;
+      transition: background-color 0.3s ease;
+    }
+
+    .hero a:hover {
+      background-color: #572ecc;
+    }
+
+    /* Footer */
+    footer {
+      background-color: rgba(0, 0, 0, 0.838);
+      padding: 20px 40px;
+      color: white;
+      text-align: center;
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+      font-size: 20px;
+      flex-wrap: wrap;
+    }
+
+    footer a {
+      color: white;
+      text-decoration: none;
+      transition: color 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 600;
+    }
+
+    footer a:hover {
+      color: #cfcfff;
+    }
+
+    .icon {
+      width: 24px;
+      height: 24px;
+      fill: currentColor;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      nav {
+        position: fixed;
+        top: 70px;
+        right: 0;
+        width: 50%;   /* only half screen */
+        height: 100%;
+        background: white;
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 20px;
+        box-shadow: -2px 0 8px rgba(0,0,0,0.1);
+        transform: translateX(100%);
+        transition: transform 0.4s ease-in-out; /* smooth delay */
+      }
+      nav.show {
+        transform: translateX(0);
+      }
+      .menu-toggle {
+        display: flex;
+      }
+      nav a {
+        margin: 15px 0;
+      }
+      .container {
+        flex-direction: column;
+        height: auto;
+      }
+      .left, .right {
+        flex: none;
+        width: 100%;
+        padding: 20px;
+      }
+      .right {
+        background: none;
+        text-align: center;
+        border-radius: 0;
+      }
+      .right img {
+        max-height: 300px;
+        border-radius: 5px;
+      }
+      footer {
+        font-size: 18px;
+        gap: 20px;
+        padding: 15px 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header>
+    <div class="logo">TrimLink</div>
+    <div class="menu-toggle" id="menu-toggle">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+    <nav id="nav">
+      <a href="/login">Sign in</a>
+      <a href="/signup">Sign up</a>
+    </nav>
+  </header>
+
+  <!-- Login Section -->
+  <div class="container">
+    <div class="left">
+      <div class="login-card">
+        <h2>Welcome Back</h2>
+        <form action="/user/login" method="post">
+          <label for="email">Email Address:</label>
+          <input type="email" id="email" name="email" placeholder="Enter your email" required />
+
+          <label for="password">Password:</label>
+          <input type="password" id="password" name="password" placeholder="Enter your password" required />
+
+          <button type="submit">Login</button>
+        </form>
+        <p class="signup-link">
+          Don't have an account? <a href="/signup">Sign Up</a>
+        </p>
+      </div>
+    </div>
+
+    <div class="right">
+      <img src="/home.png" alt="URL Shortener illustration" />
+    </div>
+  </div>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <h1>Shorten Your Links <br><span>Simplify Sharing</span></h1>
+    <p>
+      Make your long and messy URLs short, simple, and easy to share!  
+      With <strong>TrimLink</strong>, you can track clicks, manage links, and share them effortlessly.
+    </p>
+    <a href="/signup">Get Started</a>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <a href="https://www.instagram.com/shi._.vam.o_o?igsh=MTF5b2xxNWdkbjljYQ==" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+      <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+        <path d="M7 2C4.243 2 2 4.243 2 7v10c0 2.757 2.243 5 5 5h10c2.757 0 5-2.243 5-5V7c0-2.757-2.243-5-5-5H7zm10 3a1 1 0 1 1 0 2 1 1 0 0 1 0-2zM12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10zm0 2a3 3 0 1 0 0 6 3 3 0 0 0 0-6z"/>
+      </svg>
+      Instagram
+    </a>
+
+    <a href="https://linkedin.com/in/yourprofile" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+      <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+        <path d="M19 3A2 2 0 0 1 21 5v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14zM8 17v-7H6v7h2zm-1-8.3a1.1 1.1 0 1 0 0-2.2 1.1 1.1 0 0 0 0 2.2zm9 8.3v-4c0-2.21-2-2.04-2 0v4h2z"/>
+      </svg>
+      LinkedIn
+    </a>
+
+    <a href="https://github.com/shivam15102005" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
+      <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+        <path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.426 2.865 8.19 6.839 9.525.5.09.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.157-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.004.07 1.532 1.03 1.532 1.03.892 1.53 2.341 1.088 2.91.832.091-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.27.098-2.645 0 0 .84-.27 2.75 1.025A9.564 9.564 0 0 1 12 6.844c.85.004 1.705.115 2.504.338 1.908-1.295 2.746-1.025 2.746-1.025.546 1.375.202 2.392.1 2.645.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.36.31.678.923.678 1.861 0 1.343-.012 2.426-.012 2.756 0 .27.18.58.688.48A10.02 10.02 0 0 0 22 12.017C22 6.484 17.523 2 12 2z"/>
+      </svg>
+      GitHub
+    </a>
+  </footer>
+
+  <script>
+    document.getElementById("menu-toggle").addEventListener("click", () => {
+      document.getElementById("nav").classList.toggle("show");
+    });
+  </script>
+</body>
+</html>
