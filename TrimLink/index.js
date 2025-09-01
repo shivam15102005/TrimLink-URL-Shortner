@@ -11,6 +11,8 @@ const userRoute = require("./routes/user");
 
 const app = express();
 const PORT = process.env.PORT || 8000;
+const BASE_URL = process.env.BASE_URL || `http://localhost:${PORT}`;
+
 
 connectToMongoDB(process.env.MONGODB_URL)
   .then(() => console.log("✅ MongoDB connected"))
@@ -53,5 +55,6 @@ app.get("/:shortId", async (req, res) => {
 });
 
 app.listen(PORT, () => console.log(`Server Started at PORT:${PORT}`));
+
 
 
