@@ -13,10 +13,16 @@ async function handleGenerateNewShortURL(req, res) {
     createdBy: req.user._id,
   });
 
-  return res.render("home", {
-    id: shortID,
-    user: req.user || null, // <<< add this
-  });
+ // Pass BASE_URL so EJS doesn’t crash
+    return res.render("home", {
+      id: shortID,
+      user: req.user || null,
+      BASE_URL: res.locals.BASE_URL, // ✅ Added this
+    });
+  } catch (err) {
+    console.error("❌ Error generating short URL:", err);
+    res.status(500).send("Internal Server Error");
+  }
 }
 
 async function handleGetAnalytics(req, res) {
@@ -32,3 +38,4 @@ module.exports = {
   handleGenerateNewShortURL,
   handleGetAnalytics,
 };
+
