@@ -8,8 +8,9 @@ router.post("/login", handleUserLogin);
 
 // ✅ Logout
 router.get("/logout", (req, res) => {
-    res.clearCookie("token");   // remove JWT cookie
+    res.clearCookie("uid");   // remove uid cookie
     return res.redirect("/login"); // redirect back to login page
 });
 
 module.exports = router;
+
