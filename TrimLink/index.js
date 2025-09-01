@@ -37,24 +37,31 @@ app.use("/user", userRoute);
 app.use("/", checkAuth, staticRoute);
 
 
+// Redirect short links
 app.get("/:shortId", async (req, res) => {
-  const shortId = req.params.shortId;
-  const entry = await URL.findOneAndUpdate(
-    {
-      shortId,
-    },
-    {
-      $push: {
-        visitHistory: {
-          timestamp: Date.now(),
-        },
-      },
-    }
-  );
-  res.redirect(entry.redirectURL);
-});
+  try {
+    const shortId = req.params.shortId;
+    const entry = await URL.findOneAndUpdate(
+      { shortId },
+      { $push: { visitHistory: { timestamp: Date.now() } } },
+      { new: true } // return updated doc
+    );
 
+    if (!entry) {
+      // If no matching shortId found
+      return res.status(404).render("404", {
+        message: "This short link does not exist or has expired.",
+      });
+    }
+
+    return res.redirect(entry.redirectURL);
+  } catch (err) {
+    console.error("Redirect Error:", err);
+    return res.status(500).send("Internal Server Error");
+  }
+});
 app.listen(PORT, () => console.log(`Server Started at PORT:${PORT}`));
+
 
 
 
