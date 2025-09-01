@@ -107,7 +107,6 @@
       text-decoration: none;
     }
     
-
     /* ===== Table Styling ===== */
     table {
       width: 100%; max-width: 1000px; margin: 20px auto; border-collapse: collapse;
@@ -118,7 +117,7 @@
     th { background: #4cafef; color: white; }
     tr:nth-child(even) { background: #f2f2f2; }
     tr:hover { background: #eaf6ff; }
-    td a { color: #0073e6; text-decoration: none; word-break: break-word; }
+    td a { color: #0073e6; text-decoration: none; }
     td a:hover { text-decoration: underline; }
 
     /* Delete Button */
@@ -132,37 +131,35 @@
     }
     .delete-btn:hover { color: darkred; }
 
+    /* ===== Truncate Long URLs ===== */
+    td.truncate a {
+      display: inline-block;
+      max-width: 250px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      vertical-align: middle;
+    }
+    @media (max-width: 768px) {
+      td.truncate a {
+        max-width: 100% !important;
+        white-space: normal !important;
+        overflow: visible !important;
+        text-overflow: unset !important;
+      }
+    }
+
     /* Responsive Table */
     @media (max-width: 768px) {
       table, thead, tbody, th, td, tr { display: block; }
       thead tr { display: none; }
-
       tbody tr {
-        margin-bottom: 15px;
-        border: 1px solid #ddd;
-        border-radius: 10px;
-        padding: 10px;
-        background: #fff;
+        margin-bottom: 15px; border: 1px solid #ddd;
+        border-radius: 10px; padding: 10px; background: #fff;
       }
-
-      td {
-        display: block;   /* FIX: stacked layout */
-        text-align: left;
-        padding: 8px 10px;
-        border: none;
-        border-bottom: 1px solid #eee;
-        word-break: break-word; /* FIX: prevent clash */
-      }
-
+      td { display: flex; justify-content: space-between; padding: 8px 10px; border: none; border-bottom: 1px solid #eee; }
       td:last-child { border-bottom: none; }
-
-      td:before {
-        display: block;
-        font-weight: bold;
-        color: #333;
-        margin-bottom: 4px;
-        content: attr(data-label);
-      }
+      td:before { font-weight: bold; color: #333; content: attr(data-label); }
     }
   </style>
 </head>
@@ -226,25 +223,27 @@
     <table>
       <thead>
         <tr>
-          <th>Serial No. :</th> 
-          <th>ShortID:</th>
-          <th>Original URL:</th>
-          <th>Clicks:</th>
-          <th>Delete:</th>
+          <th>Serial No.</th> 
+          <th>ShortID</th>
+          <th>Original URL</th>
+          <th>Clicks</th>
+          <th>Delete</th>
         </tr>
       </thead>
       <tbody>
         <% urls.forEach((url, index) => { %>
           <tr id="row-<%= url.shortId %>">
-            <td data-label="S. No. :"><%= index + 1 %></td>
-            <td data-label="ShortID:">
+            <td data-label="S. No."><%= index + 1 %></td>
+            <td data-label="ShortID">
               <a href="http://localhost:8000/<%= url.shortId %>" target="_blank"><%= url.shortId %></a>
             </td>
-            <td data-label="Original URL:">
-              <a href="<%= url.redirectURL %>" target="_blank"><%= url.redirectURL %></a>
+            <td data-label="Original URL" class="truncate">
+              <a href="<%= url.redirectURL %>" target="_blank" title="<%= url.redirectURL %>">
+                <%= url.redirectURL %>
+              </a>
             </td>
-            <td data-label="Clicks:"><%= url.visitHistory.length %></td>
-            <td data-label="Delete:">
+            <td data-label="Clicks"><%= url.visitHistory.length %></td>
+            <td data-label="Delete">
               <button class="delete-btn" onclick="deleteUrl('<%= url.shortId %>')">🗑️</button>
             </td>
           </tr>
@@ -283,4 +282,3 @@
   </script>
 </body>
 </html>
-
