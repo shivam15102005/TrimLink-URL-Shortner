@@ -202,9 +202,10 @@
   <% if (locals.id) { %>
     <div class="short-url" id="successMsg">
       <p>✅ URL Generated: 
-        <a href="http://localhost:8000/<%= id %>" target="_blank" id="generatedLink">
-          http://localhost:8000/<%= id %>
+        <a href="<%= BASE_URL %>/<%= id %>" target="_blank" id="generatedLink">
+          <%= BASE_URL %>/<%= id %>
         </a>
+
         <button class="copy-btn" onclick="copyToClipboard()">Copy</button>
       </p>
       <!-- Go Back Home Button -->
@@ -238,7 +239,7 @@
           <tr id="row-<%= url.shortId %>">
             <td data-label="S. No. :"><%= index + 1 %></td>
             <td data-label="ShortID:">
-              <a href="http://localhost:8000/<%= url.shortId %>" target="_blank"><%= url.shortId %></a>
+               <a href="<%= BASE_URL %>/<%= url.shortId %>" target="_blank"><%= url.shortId %></a>
             </td>
             <td data-label="Original URL:">
               <a href="<%= url.redirectURL %>" target="_blank"><%= url.redirectURL %></a>
@@ -283,5 +284,6 @@
   </script>
 </body>
 </html>
+
 
 
