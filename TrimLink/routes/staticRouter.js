@@ -9,6 +9,7 @@ router.get("/", async (req, res) => {
   return res.render("home", {
     urls: allurls,
     user: req.user,
+    BASE_URL: process.env.BASE_URL || "http://localhost:8001",
   });
 });
 
@@ -21,3 +22,4 @@ router.get("/login", (req, res) => {
 });
 
 module.exports = router;
+
