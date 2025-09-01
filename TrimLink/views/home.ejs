@@ -226,25 +226,25 @@
     <table>
       <thead>
         <tr>
-          <th>Serial No.</th> 
-          <th>ShortID</th>
-          <th>Original URL</th>
-          <th>Clicks</th>
-          <th>Delete</th>
+          <th>Serial No. :</th> 
+          <th>ShortID:</th>
+          <th>Original URL:</th>
+          <th>Clicks:</th>
+          <th>Delete:</th>
         </tr>
       </thead>
       <tbody>
         <% urls.forEach((url, index) => { %>
           <tr id="row-<%= url.shortId %>">
-            <td data-label="S. No."><%= index + 1 %></td>
-            <td data-label="ShortID">
+            <td data-label="S. No. :"><%= index + 1 %></td>
+            <td data-label="ShortID:">
               <a href="http://localhost:8000/<%= url.shortId %>" target="_blank"><%= url.shortId %></a>
             </td>
-            <td data-label="Original URL">
+            <td data-label="Original URL:">
               <a href="<%= url.redirectURL %>" target="_blank"><%= url.redirectURL %></a>
             </td>
-            <td data-label="Clicks"><%= url.visitHistory.length %></td>
-            <td data-label="Delete">
+            <td data-label="Clicks:"><%= url.visitHistory.length %></td>
+            <td data-label="Delete:">
               <button class="delete-btn" onclick="deleteUrl('<%= url.shortId %>')">🗑️</button>
             </td>
           </tr>
@@ -283,3 +283,4 @@
   </script>
 </body>
 </html>
+
