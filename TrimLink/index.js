@@ -26,16 +26,16 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static("public"));
 
+ // Make BASE_URL available in all EJS templates
+app.use((req, res, next) => {
+  res.locals.BASE_URL = BASE_URL;
+  next();
+});
 
 app.use("/url", restrictToLoggedinUserOnly, urlRoute);
 app.use("/user", userRoute);
 app.use("/", checkAuth, staticRoute);
 
-// Make BASE_URL available in all EJS templates
-app.use((req, res, next) => {
-  res.locals.BASE_URL = BASE_URL;
-  next();
-});
 
 app.get("/:shortId", async (req, res) => {
   const shortId = req.params.shortId;
@@ -55,6 +55,7 @@ app.get("/:shortId", async (req, res) => {
 });
 
 app.listen(PORT, () => console.log(`Server Started at PORT:${PORT}`));
+
 
 
 
