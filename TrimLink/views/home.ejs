@@ -118,7 +118,7 @@
     th { background: #4cafef; color: white; }
     tr:nth-child(even) { background: #f2f2f2; }
     tr:hover { background: #eaf6ff; }
-    td a { color: #0073e6; text-decoration: none; }
+    td a { color: #0073e6; text-decoration: none; word-break: break-word; }
     td a:hover { text-decoration: underline; }
 
     /* Delete Button */
@@ -136,13 +136,33 @@
     @media (max-width: 768px) {
       table, thead, tbody, th, td, tr { display: block; }
       thead tr { display: none; }
+
       tbody tr {
-        margin-bottom: 15px; border: 1px solid #ddd;
-        border-radius: 10px; padding: 10px; background: #fff;
+        margin-bottom: 15px;
+        border: 1px solid #ddd;
+        border-radius: 10px;
+        padding: 10px;
+        background: #fff;
       }
-      td { display: flex; justify-content: space-between; padding: 8px 10px; border: none; border-bottom: 1px solid #eee; }
+
+      td {
+        display: block;   /* FIX: stacked layout */
+        text-align: left;
+        padding: 8px 10px;
+        border: none;
+        border-bottom: 1px solid #eee;
+        word-break: break-word; /* FIX: prevent clash */
+      }
+
       td:last-child { border-bottom: none; }
-      td:before { font-weight: bold; color: #333; content: attr(data-label); }
+
+      td:before {
+        display: block;
+        font-weight: bold;
+        color: #333;
+        margin-bottom: 4px;
+        content: attr(data-label);
+      }
     }
   </style>
 </head>
@@ -151,9 +171,9 @@
   <!-- Navbar -->
   <nav>
     <h2>
-  <img src="/icon.png" alt="Logo" style="width: 32px; height: 32px; vertical-align: middle; margin-right: 8px;">
-  TrimLink
-</h2>
+      <img src="/icon.png" alt="Logo" style="width: 32px; height: 32px; vertical-align: middle; margin-right: 8px;">
+      TrimLink
+    </h2>
 
     <div class="links">
       <% if (user) { %>
@@ -182,8 +202,8 @@
   <% if (locals.id) { %>
     <div class="short-url" id="successMsg">
       <p>✅ URL Generated: 
-        <a href="<%= BASE_URL %>/<%= id %>" target="_blank" id="generatedLink">
-          <%= BASE_URL %>/<%= id %>
+        <a href="http://localhost:8000/<%= id %>" target="_blank" id="generatedLink">
+          http://localhost:8000/<%= id %>
         </a>
         <button class="copy-btn" onclick="copyToClipboard()">Copy</button>
       </p>
@@ -218,7 +238,7 @@
           <tr id="row-<%= url.shortId %>">
             <td data-label="S. No."><%= index + 1 %></td>
             <td data-label="ShortID">
-              <a href="<%= BASE_URL %>/<%= url.shortId %>" target="_blank"><%= url.shortId %></a>
+              <a href="http://localhost:8000/<%= url.shortId %>" target="_blank"><%= url.shortId %></a>
             </td>
             <td data-label="Original URL">
               <a href="<%= url.redirectURL %>" target="_blank"><%= url.redirectURL %></a>
@@ -263,4 +283,3 @@
   </script>
 </body>
 </html>
-
