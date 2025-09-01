@@ -19,11 +19,7 @@ async function handleGenerateNewShortURL(req, res) {
       user: req.user || null,
       BASE_URL: res.locals.BASE_URL, // ✅ Added this
     });
-  } catch (err) {
-    console.error("❌ Error generating short URL:", err);
-    res.status(500).send("Internal Server Error");
   }
-}
 
 async function handleGetAnalytics(req, res) {
   const shortId = req.params.shortId;
@@ -38,4 +34,5 @@ module.exports = {
   handleGenerateNewShortURL,
   handleGetAnalytics,
 };
+
 
